@@ -3,51 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBP 2026 - Panel Integral de Récords</title>
+    <title>SBP 2026 - Panel de Control Integral</title>
     <style>
         :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #333; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
         
-        /* Navbar Superior - Botones en línea */
-        .navbar { background: var(--primary); color: white; padding: 1% 2%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; }
-        .nav-logo-mini { height: 40px; }
-        .nav-links { display: flex; gap: 1%; width: 50%; justify-content: flex-end; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 1.5% 3%; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 30%; font-size: 0.9rem; }
+        /* Navbar Superior - Botones Proporcionales en una Fila */
+        .navbar { background: var(--primary); color: white; padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: bold; width: 30%; }
+        .nav-logo-mini { height: 35px; }
+        .nav-links { display: flex; width: 65%; justify-content: flex-end; gap: 2%; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 0; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 30%; font-size: 0.85rem; text-align: center; }
         .nav-btn.active { background: var(--gold); color: var(--primary); }
 
         /* Secciones */
-        .section { display: none; padding: 2%; max-width: 900px; margin: auto; animation: fadeIn 0.4s; }
+        .section { display: none; padding: 20px; max-width: 900px; margin: auto; animation: fadeIn 0.4s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Pantalla de Inicio - Botones Grandes Proporcionales */
         .home-bg { height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.85), rgba(244,247,246,0.85)), url('insignia.png') no-repeat center; background-size: contain; }
-        .home-grid { display: flex; flex-direction: row; gap: 3%; width: 85%; height: 25%; justify-content: center; }
-        .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.8rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 2px solid transparent; }
-        .btn-home:hover { transform: scale(1.03); border-color: var(--gold); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        .btn-home i { font-size: 3.5rem; font-style: normal; }
+        .home-grid { display: flex; flex-direction: row; gap: 4%; width: 85%; height: 25%; justify-content: center; }
+        .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .btn-home:hover { transform: scale(1.02); border: 2px solid var(--gold); }
+        .btn-home i { font-size: 3rem; font-style: normal; margin-bottom: 10px; }
 
-        /* Cards de Consulta */
-        .card { background: white; padding: 4%; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); }
-        h2 { text-align: center; color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 1.6rem; }
-        label { font-weight: bold; display: block; margin-top: 15px; font-size: 1.1rem; }
-        select, .btn-search { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1.1rem; }
+        /* Cards y Tablas */
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); }
+        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
+        select, .btn-search { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
         .btn-search { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; }
 
-        /* Estadísticas */
-        .stats-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
-        .stat { padding: 15% 5%; border-radius: 12px; color: white; text-align: center; font-weight: bold; }
-        .stat b { font-size: 2.5rem; display: block; }
+        .stats-box { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat { padding: 15px 5px; border-radius: 10px; color: white; text-align: center; font-size: 0.8rem; font-weight: bold; }
+        .stat b { font-size: 1.8rem; display: block; }
         .bg-p { background: var(--success); } .bg-t { background: var(--warning); } .bg-f { background: var(--danger); }
 
-        /* Tabla de Detalle */
-        .table-wrapper { margin-top: 25px; overflow-x: auto; border-radius: 10px; border: 1px solid #ddd; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fa; color: var(--primary); font-weight: bold; }
-        .tardanza-item { color: var(--danger); font-weight: bold; }
-        .puntual-item { color: var(--success); font-weight: bold; }
+        .table-wrapper { margin-top: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; font-size: 0.9rem; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; color: var(--primary); }
     </style>
 </head>
 <body>
@@ -67,34 +62,30 @@
     <div id="inicio" class="section active">
         <div class="home-bg">
             <div class="home-grid">
-                <button class="btn-home" onclick="ver('docentes', document.getElementById('btn-docentes'))">
-                    <i>👨‍🏫</i><span>DOCENTES</span>
-                </button>
-                <button class="btn-home" onclick="ver('estudiantes', document.getElementById('btn-estudiantes'))">
-                    <i>🎓</i><span>ESTUDIANTES</span>
-                </button>
+                <button class="btn-home" onclick="ver('docentes', document.getElementById('btn-docentes'))"><i>👨‍🏫</i>DOCENTES</button>
+                <button class="btn-home" onclick="ver('estudiantes', document.getElementById('btn-estudiantes'))"><i>🎓</i>ESTUDIANTES</button>
             </div>
         </div>
     </div>
 
     <div id="docentes" class="section">
         <div class="card">
-            <h2>🔍 Récord Administrativo Docente</h2>
-            <label>Seleccione Docente:</label>
-            <select id="selDoc"><option>Cargando lista...</option></select>
-            <button class="btn-search" onclick="getRecordDoc()">CONSULTAR RÉCORD</button>
+            <h2>Récord Administrativo Docente</h2>
+            <label>Docente:</label>
+            <select id="selDoc"><option>Cargando...</option></select>
+            <button class="btn-search" onclick="getRecordDoc()">CONSULTAR</button>
             <div id="resDoc"></div>
         </div>
     </div>
 
     <div id="estudiantes" class="section">
         <div class="card">
-            <h2>🔍 Récord Estudiantil</h2>
-            <label>1. Seleccione Aula:</label>
-            <select id="selGra" onchange="getAlu()"><option>Cargando aulas...</option></select>
-            <label>2. Seleccione Estudiante:</label>
-            <select id="selAlu" disabled><option>Primero elija un aula</option></select>
-            <button class="btn-search" onclick="getRecordEst()">CONSULTAR RÉCORD</button>
+            <h2>Récord Estudiantil</h2>
+            <label>Aula:</label>
+            <select id="selGra" onchange="getAlu()"><option>Cargando...</option></select>
+            <label>Estudiante:</label>
+            <select id="selAlu" disabled><option>Seleccione aula</option></select>
+            <button class="btn-search" onclick="getRecordEst()">CONSULTAR</button>
             <div id="resEst"></div>
         </div>
     </div>
@@ -103,7 +94,8 @@
         const API_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
         const API_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
 
-        let horariosDocentes = {}; // Objeto para guardar la configuración de entrada
+        let configDocentes = {};
+        const FECHA_INICIO = new Date(2026, 2, 10); // 10 de Marzo de 2026
 
         function ver(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -115,18 +107,16 @@
         window.onload = async () => {
             setInterval(() => { document.getElementById("reloj").textContent = new Date().toLocaleTimeString(); }, 1000);
             
-            // Cargar Docentes y sus horarios
             fetch(API_DOC + "?v=apiData").then(r => r.json()).then(data => {
-                horariosDocentes = data.config; // Guardamos horarios oficiales
+                configDocentes = data.config;
                 let s = document.getElementById("selDoc");
-                s.innerHTML = '<option value="">-- Seleccione Docente --</option>';
+                s.innerHTML = '<option value="">-- Seleccione --</option>';
                 Object.keys(data.config).sort().forEach(n => s.innerHTML += `<option value="${n}">${n}</option>`);
             });
 
-            // Cargar Aulas Estudiantes
             fetch(API_EST + "?v=getGrados").then(r => r.json()).then(data => {
                 let s = document.getElementById("selGra");
-                s.innerHTML = '<option value="">-- Seleccione Aula --</option>';
+                s.innerHTML = '<option value="">-- Seleccione --</option>';
                 data.forEach(g => s.innerHTML += `<option value="${g}">${g}</option>`);
             });
         };
@@ -134,9 +124,9 @@
         async function getAlu() {
             let g = document.getElementById("selGra").value;
             let s = document.getElementById("selAlu");
-            s.disabled = true; s.innerHTML = "<option>Cargando alumnos...</option>";
+            s.disabled = true; s.innerHTML = "<option>Cargando...</option>";
             const data = await fetch(`${API_EST}?v=getAlumnos&grado=${encodeURIComponent(g)}`).then(r => r.json());
-            s.innerHTML = '<option value="">-- Seleccione Alumno --</option>';
+            s.innerHTML = '<option value="">-- Seleccione --</option>';
             data.forEach(a => s.innerHTML += `<option value="${a.id}">${a.nombre}</option>`);
             s.disabled = false;
         }
@@ -145,47 +135,56 @@
             let nombre = document.getElementById("selDoc").value;
             let div = document.getElementById("resDoc");
             if(!nombre) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Calculando minutos y tardanzas...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Analizando asistencia y faltas...</p>";
             
             const res = await fetch(`${API_DOC}?v=getRecord&id=${encodeURIComponent(nombre)}`).then(r => r.json());
-            const conf = horariosDocentes[nombre];
+            const conf = configDocentes[nombre];
             
-            let tardanzas = 0, puntuales = 0;
-            let rows = res.detalle.map(d => {
-                if(d.tipo === "SALIDA") return ""; // Ignorar salidas para este cálculo
-                
-                // LÓGICA DE DEDUCCIÓN DE TARDANZA (Matemática)
-                const [hM, mM] = d.hora.split(":").map(Number); // Marcada
-                const [hO, mO] = conf.entrada.split(":").map(Number); // Oficial
-                
-                let marcadaTotalMins = (hM * 60) + mM;
-                let oficialTotalMins = (hO * 60) + mO;
-                let diferencia = marcadaTotalMins - oficialTotalMins;
-                
-                let esTardanza = diferencia > 5; // Tolerancia 5 minutos
-                if(esTardanza) tardanzas++; else puntuales++;
+            let puntuales = 0, tardanzas = 0;
+            let diasAsistidos = new Set();
 
-                return `<tr>
-                    <td>${d.fecha}</td>
-                    <td>${d.hora} <br><small style="color:#666">Oficial: ${conf.entrada}</small></td>
-                    <td class="${esTardanza?'tardanza-item':'puntual-item'}">
-                        ${esTardanza ? 'TARDANZA ('+diferencia+' min)' : 'PUNTUAL'}
-                    </td>
-                </tr>`;
+            let filas = res.detalle.map(d => {
+                if(d.tipo === "SALIDA") return "";
+                diasAsistidos.add(d.fecha);
+
+                const [hM, mM] = d.hora.split(":").map(Number);
+                const [hO, mO] = conf.entrada.split(":").map(Number);
+                let diff = (hM * 60 + mM) - (hO * 60 + mO);
+                let esTard = diff > 5;
+                if(esTard) tardanzas++; else puntuales++;
+
+                return `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${esTard ? 'TARDANZA ('+diff+'m)' : 'PUNTUAL'}</td></tr>`;
             }).join("");
 
-            renderUI(div, puntuales, tardanzas, 0, rows);
+            let faltas = calcularFaltasTotales(diasAsistidos);
+            renderUI(div, puntuales, tardanzas, faltas, filas);
         }
 
         async function getRecordEst() {
             let id = document.getElementById("selAlu").value;
             let div = document.getElementById("resEst");
             if(!id) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Consultando registro estudiantil...</p>";
-            
+            div.innerHTML = "<p style='text-align:center'>⌛ Consultando...</p>";
             const res = await fetch(`${API_EST}?v=getRecord&id=${encodeURIComponent(id)}`).then(r => r.json());
-            let rows = res.detalle.map(d => `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`).join("");
-            renderUI(div, res.ingresos, res.tardanzas, res.faltas || 0, rows);
+            let diasA = new Set(res.detalle.map(d => d.fecha));
+            let f = calcularFaltasTotales(diasA);
+            let filas = res.detalle.map(d => `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`).join("");
+            renderUI(div, res.ingresos, res.tardanzas, f, filas);
+        }
+
+        function calcularFaltasTotales(diasAsistidos) {
+            let hoy = new Date();
+            let totalFaltas = 0;
+            let temp = new Date(FECHA_INICIO);
+            while(temp <= hoy) {
+                let diaSemana = temp.getDay();
+                if(diaSemana !== 0 && diaSemana !== 6) { // No fines de semana
+                    let fechaStr = temp.toISOString().split('T')[0];
+                    if(!diasAsistidos.has(fechaStr)) totalFaltas++;
+                }
+                temp.setDate(temp.getDate() + 1);
+            }
+            return totalFaltas;
         }
 
         function renderUI(div, p, t, f, filas) {
@@ -196,10 +195,8 @@
                     <div class="stat bg-f"><b>${f}</b>FALTAS</div>
                 </div>
                 <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>Fecha</th><th>Hora</th><th>Incidencia</th></tr></thead>
-                        <tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin movimientos</td></tr>'}</tbody>
-                    </table>
+                    <table><thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
+                    <tbody>${filas || '<tr><td colspan="3">Sin registros</td></tr>'}</tbody></table>
                 </div>`;
         }
     </script>
