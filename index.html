@@ -1,3 +1,10 @@
+El problema del logo y el reloj suele deberse a la estructura del contenedor (Flexbox) que, al no tener anchos definidos o estar mal alineado, "pisa" los elementos pequeños para dar espacio a los botones.
+
+He ajustado el CSS del Navbar para que se divida en dos niveles claros: uno superior para la identidad (Logo + Nombre + Reloj) y uno inferior para la navegación. Esto garantiza que el logo siempre sea visible a la izquierda y el reloj a la derecha.
+
+Aquí tienes el código completo y corregido para tu index.html en GitHub:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,40 +15,67 @@
         :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
         
-        /* Navbar Superior - Botones Pequeños con Iconos */
-        .navbar { background: var(--primary); color: white; padding: 5px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .nav-top { display: flex; justify-content: space-between; align-items: center; padding: 5px 3%; }
-        .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
-        .nav-logo-mini { height: 28px; }
-        #reloj { font-family: monospace; color: var(--gold); font-size: 0.85rem; }
+        /* NAVBAR CORREGIDO */
+        .navbar { background: var(--primary); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         
-        .nav-links { display: flex; width: 100%; justify-content: space-evenly; background: rgba(0,0,0,0.1); padding: 5px 0; }
-        .nav-btn { background: none; border: none; color: white; padding: 6px 0; cursor: pointer; font-weight: bold; width: 33%; font-size: 0.75rem; transition: 0.3s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .nav-btn i { font-size: 1.1rem; font-style: normal; }
-        .nav-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+        /* Fila Superior: Logo y Reloj */
+        .nav-top { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 8px 15px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-brand { display: flex; align-items: center; gap: 10px; }
+        .nav-logo-mini { height: 32px; width: auto; display: block; }
+        .nav-title { font-weight: bold; font-size: 1rem; letter-spacing: 1px; }
+        #reloj { font-family: 'Courier New', monospace; color: var(--gold); font-weight: bold; font-size: 0.9rem; }
 
-        /* Pantalla Inicio - Botones Grandes Proporcionales */
+        /* Fila Inferior: Botones de Navegación */
+        .nav-links { display: flex; width: 100%; background: rgba(0,0,0,0.2); }
+        .nav-btn { 
+            background: none; 
+            border: none; 
+            color: white; 
+            padding: 10px 0; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 33.33%; 
+            font-size: 0.75rem; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 2px;
+            transition: 0.3s;
+        }
+        .nav-btn i { font-size: 1.2rem; font-style: normal; }
+        .nav-btn.active { color: var(--gold); background: rgba(255,255,255,0.05); box-shadow: inset 0 -3px 0 var(--gold); }
+
+        /* Pantalla Inicio - Botones Proporcionales */
         .home-bg { height: 80vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.8), rgba(244,247,246,0.8)), url('insignia.png') no-repeat center; background-size: contain; }
-        .home-grid { display: flex; width: 92%; height: 30%; gap: 4%; justify-content: center; }
-        .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.4rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-home i { font-size: 3.5rem; font-style: normal; margin-bottom: 8px; }
+        .home-grid { display: flex; width: 92%; height: 28%; gap: 4%; justify-content: center; }
+        .btn-home { width: 46%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.4rem; box-shadow: 0 8px 20px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; }
+        .btn-home i { font-size: 3.5rem; font-style: normal; margin-bottom: 5px; }
+        .btn-home:hover { transform: scale(1.02); background: #151b60; }
 
-        /* Contenedores */
+        /* Contenedores de Sección */
         .section { display: none; padding: 15px; max-width: 800px; margin: auto; animation: fadeIn 0.3s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 6px solid var(--primary); }
-        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-top: 0; font-size: 1.3rem; }
+        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-top: 0; font-size: 1.2rem; }
+        
         .flex-row { display: flex; gap: 10px; margin-bottom: 10px; }
         .flex-item { flex: 1; }
         select, .btn-search { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; box-sizing: border-box; }
         .btn-search { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
 
-        /* Stats */
+        /* Estadísticas */
         .stats-box { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
         .stat { padding: 12px 5px; border-radius: 10px; color: white; text-align: center; font-weight: bold; font-size: 0.7rem; }
-        .stat b { font-size: 1.7rem; display: block; }
+        .stat b { font-size: 1.6rem; display: block; }
         .bg-p { background: var(--success); } .bg-t { background: var(--warning); } .bg-f { background: var(--danger); }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
@@ -54,8 +88,8 @@
     <nav class="navbar">
         <div class="nav-top">
             <div class="nav-brand">
-                <img src="insignia.png" class="nav-logo-mini" onerror="this.style.display='none'">
-                <span>SBP 2026</span>
+                <img src="insignia.png" class="nav-logo-mini" alt="Logo">
+                <span class="nav-title">SBP 2026</span>
             </div>
             <div id="reloj">00:00:00</div>
         </div>
@@ -77,7 +111,7 @@
 
     <div id="docentes" class="section">
         <div class="card">
-            <h2>Récord Docente</h2>
+            <h2>Récord Docente Mensual</h2>
             <div class="flex-row">
                 <div class="flex-item"><label>Docente:</label><select id="selDoc"><option>Cargando...</option></select></div>
                 <div class="flex-item"><label>Mes:</label><select id="mesDoc"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
@@ -89,7 +123,7 @@
 
     <div id="estudiantes" class="section">
         <div class="card">
-            <h2>Récord Estudiantil</h2>
+            <h2>Récord Estudiantil Mensual</h2>
             <div class="flex-row">
                 <div class="flex-item"><label>Aula:</label><select id="selGra" onchange="getAlu()"><option>Cargando...</option></select></div>
                 <div class="flex-item"><label>Mes:</label><select id="mesEst"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
@@ -114,8 +148,13 @@
         }
 
         window.onload = () => {
-            setInterval(() => { document.getElementById("reloj").textContent = new Date().toLocaleTimeString(); }, 1000);
+            // Reloj en tiempo real
+            setInterval(() => { 
+                const now = new Date();
+                document.getElementById("reloj").textContent = now.toLocaleTimeString('es-PE', { hour12: false }); 
+            }, 1000);
             
+            // Cargar configuración y feriados
             fetch(API_DOC + "?v=apiData").then(r => r.json()).then(data => {
                 feriados = data.feriados || [];
                 fetch(API_DOC + "?v=getDocentes").then(r => r.json()).then(doc => {
@@ -125,6 +164,7 @@
                 });
             });
 
+            // Cargar Grados
             fetch(API_EST + "?v=getGrados").then(r => r.json()).then(data => {
                 let s = document.getElementById("selGra");
                 s.innerHTML = '<option value="">-- Seleccione --</option>';
@@ -147,7 +187,7 @@
             let m = document.getElementById("mesDoc").value;
             let div = document.getElementById("resDoc");
             if(!n) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Cargando...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
             const res = await fetch(`${API_DOC}?v=getRecord&id=${encodeURIComponent(n)}`).then(r => r.json());
             let asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+m+"-")).map(d => {
@@ -165,7 +205,7 @@
             let m = document.getElementById("mesEst").value;
             let div = document.getElementById("resEst");
             if(!id) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Cargando...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
             const res = await fetch(`${API_EST}?v=getRecord&id=${encodeURIComponent(id)}`).then(r => r.json());
             let asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+m+"-")).map(d => {
