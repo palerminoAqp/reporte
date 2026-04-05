@@ -8,29 +8,28 @@
         :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
         
-        /* Navbar Superior - Botones en una sola fila (33% cada uno) */
+        /* Navbar Superior - Botones Proporcionales (1/3 cada uno) */
         .navbar { background: var(--primary); color: white; padding: 10px 0; display: flex; justify-content: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .nav-links { display: flex; width: 95%; justify-content: space-between; gap: 5px; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px 0; border-radius: 5px; cursor: pointer; font-weight: bold; width: 32%; font-size: 0.85rem; transition: 0.3s; text-align: center; }
+        .nav-links { display: flex; width: 96%; justify-content: space-between; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px 0; border-radius: 5px; cursor: pointer; font-weight: bold; width: 32.5%; font-size: 0.85rem; transition: 0.3s; text-align: center; }
         .nav-btn.active { background: var(--gold); color: var(--primary); }
 
         /* Pantalla Inicio - Botones Grandes Proporcionales */
         .home-bg { height: 85vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.8), rgba(244,247,246,0.8)), url('insignia.png') no-repeat center; background-size: contain; }
         .home-grid { display: flex; width: 90%; height: 30%; gap: 5%; justify-content: center; }
-        .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; }
+        .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1.6rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; }
         .btn-home i { font-size: 3.5rem; font-style: normal; margin-bottom: 10px; }
         .btn-home:hover { transform: scale(1.03); border: 2px solid var(--gold); }
 
-        /* Secciones */
-        .section { display: none; padding: 20px; max-width: 800px; margin: auto; animation: fadeIn 0.4s; }
+        /* Contenedores */
+        .section { display: none; padding: 20px; max-width: 850px; margin: auto; animation: fadeIn 0.4s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Formulario y Tabla */
         .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); }
         .flex-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .flex-item { flex: 1; }
-        select, .btn-search { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #ccc; font-size: 1rem; margin-top: 5px; }
+        select, .btn-search { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #ccc; font-size: 1rem; margin-top: 5px; box-sizing: border-box; }
         .btn-search { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; margin-top: 15px; }
 
         /* Stats */
@@ -92,6 +91,8 @@
         const API_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
         const API_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
 
+        let feriados = []; // Lista global de feriados
+
         function ver(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -100,11 +101,16 @@
         }
 
         window.onload = () => {
-            fetch(API_DOC + "?v=getDocentes").then(r => r.json()).then(data => {
-                let s = document.getElementById("selDoc");
-                s.innerHTML = '<option value="">-- Seleccione --</option>';
-                data.forEach(d => s.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`);
+            // Cargar configuración y feriados desde Docentes
+            fetch(API_DOC + "?v=apiData").then(r => r.json()).then(data => {
+                feriados = data.feriados || [];
+                fetch(API_DOC + "?v=getDocentes").then(r => r.json()).then(docentes => {
+                    let s = document.getElementById("selDoc");
+                    s.innerHTML = '<option value="">-- Seleccione --</option>';
+                    docentes.forEach(d => s.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`);
+                });
             });
+
             fetch(API_EST + "?v=getGrados").then(r => r.json()).then(data => {
                 let s = document.getElementById("selGra");
                 s.innerHTML = '<option value="">-- Seleccione --</option>';
@@ -127,21 +133,16 @@
             let m = document.getElementById("mesDoc").value;
             let div = document.getElementById("resDoc");
             if(!n) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
-            
+            div.innerHTML = "<p style='text-align:center'>⌛ Calculando con feriados...</p>";
             const res = await fetch(`${API_DOC}?v=getRecord&id=${encodeURIComponent(n)}`).then(r => r.json());
-            
-            // FILTRADO POR MES Y CÁLCULO DE FALTAS EN HTML (Usando data limpia del servidor)
             let asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+m+"-")).map(d => {
                 asistidos.add(d.fecha);
                 return `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`;
             }).join("");
-
             let f = calcularFaltas(asistidos, m, res.diaConfig, 10, "docente");
             let p = res.detalle.filter(d => d.fecha.includes("-"+m+"-") && d.tipo.includes("PUNTUAL")).length;
             let t = res.detalle.filter(d => d.fecha.includes("-"+m+"-") && d.tipo.includes("TARDANZA")).length;
-
             renderUI(div, p, t, f, filas);
         }
 
@@ -150,19 +151,16 @@
             let m = document.getElementById("mesEst").value;
             let div = document.getElementById("resEst");
             if(!id) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
-            
+            div.innerHTML = "<p style='text-align:center'>⌛ Consultando récord...</p>";
             const res = await fetch(`${API_EST}?v=getRecord&id=${encodeURIComponent(id)}`).then(r => r.json());
             let asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+m+"-")).map(d => {
                 asistidos.add(d.fecha);
                 return `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`;
             }).join("");
-
             let f = (m === "03") ? 0 : calcularFaltas(asistidos, m, "todos", 6, "estudiante");
             let p = res.detalle.filter(d => d.fecha.includes("-"+m+"-") && d.tipo === "INGRESO").length;
             let t = res.detalle.filter(d => d.fecha.includes("-"+m+"-") && d.tipo === "TARDANZA").length;
-
             renderUI(div, p, t, f, filas);
         }
 
@@ -175,10 +173,15 @@
 
             while(temp <= limite) {
                 let dSem = temp.getDay();
-                if(dSem !== 0 && dSem !== 6) {
+                let fStr = temp.toISOString().split('T')[0];
+                
+                // CRITERIOS PARA CONTAR FALTA:
+                // 1. No es fin de semana.
+                // 2. NO es feriado.
+                // 3. El día coincide con la configuración del docente.
+                if(dSem !== 0 && dSem !== 6 && !feriados.includes(fStr)) {
                     let dNom = DIAS[dSem];
                     if(diaConfig === "todos" || diaConfig === dNom) {
-                        let fStr = temp.toISOString().split('T')[0];
                         if(!asistidos.has(fStr)) faltas++;
                     }
                 }
