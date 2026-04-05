@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBP 2026 - Panel Integral</title>
+    <style>
+        :root { --primary: #1a237e; --secondary: #303f9f; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
+        
+        .navbar { background: var(--primary); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; }
+        .nav-logo-mini { height: 30px; }
+        .nav-links { display: flex; gap: 10px; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .nav-btn:hover, .nav-btn.active { background: white; color: var(--primary); }
+
+        .section { display: none; padding: 20px; max-width: 1100px; margin: auto; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .home-bg { height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.85), rgba(244,247,246,0.85)), url('insignia.png') no-repeat center; background-size: contain; }
+        .home-grid { display: flex; gap: 30px; width: 90%; max-width: 800px; }
+        .home-card { flex: 1; background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s; border: 3px solid transparent; }
+        .home-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .home-card i { font-size: 60px; display: block; margin-bottom: 15px; text-decoration: none; font-style: normal; }
+        .home-card h2 { margin: 0; color: var(--primary); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 5px solid var(--primary); }
+        .stat-val { font-size: 28px; font-weight: bold; color: var(--primary); }
+        
+        .table-wrapper { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: var(--primary); color: white; padding: 15px; text-align: left; position: sticky; top: 0; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover { background: #f1f1f1; }
+
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; }
+        .bg-success { background: var(--success); }
+        .bg-warning { background: var(--warning); }
+        
+        #loader-global { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: #ccc; z-index: 1000; display: none; }
+        #loader-bar { height: 100%; background: var(--success); width: 0%; transition: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <div id="loader-global"><div id="loader-bar"></div></div>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="insignia.png" class="nav-logo-mini" onerror="this.style.display='none'">
+            <span id="txtHora">00:00:00</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showSection('inicio', this)">INICIO</button>
+            <button class="nav-btn" onclick="showSection('docentes', this)">DOCENTES</button>
+            <button class="nav-btn" onclick="showSection('estudiantes', this)">ESTUDIANTES</button>
+        </div>
+    </nav>
+
+    <div id="inicio" class="section active">
+        <div class="home-bg">
+            <div class="home-grid">
+                <div class="home-card" onclick="showSection('docentes')">
+                    <i>👨‍🏫</i>
+                    <h2>Docentes</h2>
+                    <p>Minutos de deuda y récord</p>
+                </div>
+                <div class="home-card" onclick="showSection('estudiantes')">
+                    <i>🎓</i>
+                    <h2>Estudiantes</h2>
+                    <p>Asistencia por aula y grado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="docentes" class="section">
+        <h2 style="color:var(--primary)">📊 Reporte Administrativo Docentes</h2>
+        <div class="stats-grid">
+            <select id="mesDoc" onchange="renderDocentes()" style="padding:12px; border-radius:10px; border:1px solid #ccc;">
+                <option value="03">Marzo (Histórico)</option>
+                <option value="04" selected>Abril</option>
+                <option value="05">Mayo</option>
+            </select>
+            <div class="stat-card"><h3>Min. Deuda</h3><div id="dMin" class="stat-val">0</div></div>
+            <div class="stat-card"><h3>Tardanzas</h3><div id="dTard" class="stat-val">0</div></div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Docente</th><th>Fecha</th><th>Hora</th><th>Min. Tardanza</th><th>Estado</th></tr>
+                </thead>
+                <tbody id="bodyDoc"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="estudiantes" class="section">
+        <h2 style="color:var(--primary)">📋 Control de Asistencia Estudiantes</h2>
+        <div class="stats-grid">
+            <select id="mesEst" onchange="renderEstudiantes()" style="padding:12px; border-radius:10px; border:1px solid #ccc;">
+                <option value="03">Marzo</option>
+                <option value="04" selected>Abril</option>
+                <option value="05">Mayo</option>
+            </select>
+            <div class="stat-card"><h3>Total Ingresos</h3><div id="eTotal" class="stat-val">0</div></div>
+            <div class="stat-card"><h3>Tardanzas</h3><div id="eTard" class="stat-val">0</div></div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Estudiante</th><th>Aula</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr>
+                </thead>
+                <tbody id="bodyEst"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const URL_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
+        const URL_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
+
+        let dbDoc = { asistencias: [], config: {} };
+        let dbEst = [];
+
+        setInterval(() => {
+            document.getElementById("txtHora").textContent = new Date().toLocaleTimeString();
+        }, 1000);
+
+        function showSection(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(btn) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else {
+                // Si viene de los cards de inicio, activar el botón del navbar
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    if(b.textContent.toLowerCase().includes(id)) b.classList.add('active');
+                    else b.classList.remove('active');
+                });
+            }
+        }
+
+        async function init() {
+            const loader = document.getElementById("loader-global");
+            const bar = document.getElementById("loader-bar");
+            loader.style.display = "block";
+            bar.style.width = "30%";
+
+            try {
+                // CARGA SIMULTÁNEA (Más rápido)
+                const [resDoc, resEst] = await Promise.all([
+                    fetch(URL_DOC + "?v=apiData").then(r => r.json()),
+                    fetch(URL_EST + "?v=apiDataEstudiantes").then(r => r.json())
+                ]);
+
+                dbDoc = resDoc;
+                dbEst = resEst;
+                
+                bar.style.width = "100%";
+                setTimeout(() => loader.style.display = "none", 500);
+
+                renderDocentes();
+                renderEstudiantes();
+            } catch(e) { 
+                console.error("Error cargando datos:", e); 
+                alert("Fallo al conectar con los libros SBP. Verifique su conexión.");
+            }
+        }
+
+        function renderDocentes() {
+            const mes = document.getElementById("mesDoc").value;
+            const filtroMes = "-"+mes+"-";
+            const tbody = document.getElementById("bodyDoc");
+            tbody.innerHTML = "";
+            let mins = 0, tard = 0;
+
+            dbDoc.asistencias.forEach(r => {
+                if (r[3] === "SALIDA" || !r[0].includes(filtroMes)) return;
+                const conf = dbDoc.config[r[2]];
+                if (!conf) return;
+
+                const [hE, mE] = r[1].split(":").map(Number);
+                const [hC, mC] = conf.entrada.split(":").map(Number);
+                let diff = (hE * 60 + mE) - (hC * 60 + mC);
+                let esTard = diff > 5;
+
+                if (esTard) { tard++; mins += diff; }
+                tbody.innerHTML += `<tr>
+                    <td><strong>${r[2]}</strong></td>
+                    <td>${r[0]}</td>
+                    <td>${r[1]}</td>
+                    <td style="color:${esTard?'red':'green'}; font-weight:bold">${esTard ? diff+' min' : '-'}</td>
+                    <td><span class="badge ${esTard?'bg-warning':'bg-success'}">${esTard?'TARDANZA':'PUNTUAL'}</span></td>
+                </tr>`;
+            });
+            document.getElementById("dMin").textContent = mins;
+            document.getElementById("dTard").textContent = tard;
+        }
+
+        function renderEstudiantes() {
+            const mes = document.getElementById("mesEst").value;
+            const filtroMes = "-"+mes+"-";
+            const tbody = document.getElementById("bodyEst");
+            tbody.innerHTML = "";
+            let total = 0, tard = 0;
+
+            dbEst.forEach(r => {
+                if (!r[0].includes(filtroMes)) return;
+                let esTard = r[5] === "TARDANZA";
+                if (esTard) tard++;
+                total++;
+                tbody.innerHTML += `<tr>
+                    <td><strong>${r[3]}</strong></td>
+                    <td>${r[4]}</td>
+                    <td>${r[0]}</td>
+                    <td>${r[1]}</td>
+                    <td><span class="badge ${esTard?'bg-warning':'bg-success'}">${r[5]}</span></td>
+                </tr>`;
+            });
+            document.getElementById("eTotal").textContent = total;
+            document.getElementById("eTard").textContent = tard;
+        }
+
+        init();
+    </script>
+</body>
+</html>
