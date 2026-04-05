@@ -3,55 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBP 2026 - Panel Integral</title>
+    <title>SBP 2026 - Panel de Récords</title>
     <style>
-        :root { --primary: #1a237e; --secondary: #303f9f; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
+        :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
         
+        /* Navbar */
         .navbar { background: var(--primary); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .nav-brand { display: flex; align-items: center; gap: 10px; }
-        .nav-logo-mini { height: 30px; }
-        .nav-links { display: flex; gap: 10px; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .nav-btn:hover, .nav-btn.active { background: white; color: var(--primary); }
+        .nav-logo-mini { height: 35px; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-left: 5px; }
+        .nav-btn.active { background: var(--gold); color: var(--primary); }
 
-        .section { display: none; padding: 20px; max-width: 1100px; margin: auto; animation: fadeIn 0.5s; }
+        /* Contenedores */
+        .section { display: none; padding: 20px; max-width: 800px; margin: auto; animation: fadeIn 0.4s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .home-bg { height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.85), rgba(244,247,246,0.85)), url('insignia.png') no-repeat center; background-size: contain; }
-        .home-grid { display: flex; gap: 30px; width: 90%; max-width: 800px; }
-        .home-card { flex: 1; background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s; border: 3px solid transparent; }
-        .home-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .home-card i { font-size: 60px; display: block; margin-bottom: 15px; text-decoration: none; font-style: normal; }
-        .home-card h2 { margin: 0; color: var(--primary); }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 5px solid var(--primary); }
-        .stat-val { font-size: 28px; font-weight: bold; color: var(--primary); }
+        .card-consulta { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 20px; border-top: 5px solid var(--primary); }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 10px; text-align: center; }
         
-        .table-wrapper { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: var(--primary); color: white; padding: 15px; text-align: left; position: sticky; top: 0; }
-        td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
-        tr:hover { background: #f1f1f1; }
+        label { font-weight: bold; display: block; margin-top: 15px; color: #555; }
+        select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+        button { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: var(--secondary); transform: scale(1.01); }
 
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; }
-        .bg-success { background: var(--success); }
-        .bg-warning { background: var(--warning); }
-        
-        #loader-global { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: #ccc; z-index: 1000; display: none; }
-        #loader-bar { height: 100%; background: var(--success); width: 0%; transition: 0.3s; }
+        /* Stats Box */
+        .stats-box { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; margin-top: 20px; }
+        .stat { padding: 15px 5px; border-radius: 8px; color: white; font-size: 13px; }
+        .stat b { font-size: 24px; display: block; }
+        .bg-p { background: var(--success); } .bg-t { background: var(--warning); } .bg-f { background: var(--danger); }
+
+        /* Tablas */
+        .table-wrapper { margin-top: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; color: var(--primary); }
+
+        /* Inicio */
+        .home-bg { height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.8), rgba(244,247,246,0.8)), url('insignia.png') no-repeat center; background-size: contain; }
+        .home-grid { display: flex; gap: 20px; width: 90%; max-width: 600px; }
     </style>
 </head>
 <body>
 
-    <div id="loader-global"><div id="loader-bar"></div></div>
-
     <nav class="navbar">
         <div class="nav-brand">
             <img src="insignia.png" class="nav-logo-mini" onerror="this.style.display='none'">
-            <span id="txtHora">00:00:00</span>
+            <span id="txtHora">SBP 2026</span>
         </div>
         <div class="nav-links">
             <button class="nav-btn active" onclick="showSection('inicio', this)">INICIO</button>
@@ -63,59 +62,37 @@
     <div id="inicio" class="section active">
         <div class="home-bg">
             <div class="home-grid">
-                <div class="home-card" onclick="showSection('docentes')">
-                    <i>👨‍🏫</i>
-                    <h2>Docentes</h2>
-                    <p>Minutos de deuda y récord</p>
-                </div>
-                <div class="home-card" onclick="showSection('estudiantes')">
-                    <i>🎓</i>
-                    <h2>Estudiantes</h2>
-                    <p>Asistencia por aula y grado</p>
-                </div>
+                <button onclick="showSection('docentes')">👨‍🏫 Consulta Docentes</button>
+                <button onclick="showSection('estudiantes')">🎓 Consulta Estudiantes</button>
             </div>
         </div>
     </div>
 
     <div id="docentes" class="section">
-        <h2 style="color:var(--primary)">📊 Reporte Administrativo Docentes</h2>
-        <div class="stats-grid">
-            <select id="mesDoc" onchange="renderDocentes()" style="padding:12px; border-radius:10px; border:1px solid #ccc;">
-                <option value="03">Marzo (Histórico)</option>
-                <option value="04" selected>Abril</option>
-                <option value="05">Mayo</option>
+        <div class="card-consulta">
+            <h2>🔍 Récord Administrativo Docente</h2>
+            <label>Seleccione Docente:</label>
+            <select id="selDocente">
+                <option value="">Cargando lista...</option>
             </select>
-            <div class="stat-card"><h3>Min. Deuda</h3><div id="dMin" class="stat-val">0</div></div>
-            <div class="stat-card"><h3>Tardanzas</h3><div id="dTard" class="stat-val">0</div></div>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Docente</th><th>Fecha</th><th>Hora</th><th>Min. Tardanza</th><th>Estado</th></tr>
-                </thead>
-                <tbody id="bodyDoc"></tbody>
-            </table>
+            <button onclick="consultarDocente()">VER RÉCORD DOCENTE</button>
+            <div id="resDoc"></div>
         </div>
     </div>
 
     <div id="estudiantes" class="section">
-        <h2 style="color:var(--primary)">📋 Control de Asistencia Estudiantes</h2>
-        <div class="stats-grid">
-            <select id="mesEst" onchange="renderEstudiantes()" style="padding:12px; border-radius:10px; border:1px solid #ccc;">
-                <option value="03">Marzo</option>
-                <option value="04" selected>Abril</option>
-                <option value="05">Mayo</option>
+        <div class="card-consulta">
+            <h2>🔍 Récord Estudiantil SBP</h2>
+            <label>1. Seleccione Aula:</label>
+            <select id="selGrado" onchange="cargarAlumnos()">
+                <option value="">Cargando aulas...</option>
             </select>
-            <div class="stat-card"><h3>Total Ingresos</h3><div id="eTotal" class="stat-val">0</div></div>
-            <div class="stat-card"><h3>Tardanzas</h3><div id="eTard" class="stat-val">0</div></div>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Estudiante</th><th>Aula</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr>
-                </thead>
-                <tbody id="bodyEst"></tbody>
-            </table>
+            <label>2. Seleccione Estudiante:</label>
+            <select id="selAlumno" disabled>
+                <option value="">Elija un aula primero</option>
+            </select>
+            <button onclick="consultarEstudiante()">VER RÉCORD ESTUDIANTIL</button>
+            <div id="resEst"></div>
         </div>
     </div>
 
@@ -123,12 +100,10 @@
         const URL_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
         const URL_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
 
-        let dbDoc = { asistencias: [], config: {} };
-        let dbEst = [];
-
-        setInterval(() => {
-            document.getElementById("txtHora").textContent = new Date().toLocaleTimeString();
-        }, 1000);
+        window.onload = () => {
+            cargarFiltrosIniciales();
+            setInterval(() => { document.getElementById("txtHora").textContent = new Date().toLocaleTimeString(); }, 1000);
+        };
 
         function showSection(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -136,97 +111,76 @@
             if(btn) {
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-            } else {
-                // Si viene de los cards de inicio, activar el botón del navbar
-                document.querySelectorAll('.nav-btn').forEach(b => {
-                    if(b.textContent.toLowerCase().includes(id)) b.classList.add('active');
-                    else b.classList.remove('active');
-                });
             }
         }
 
-        async function init() {
-            const loader = document.getElementById("loader-global");
-            const bar = document.getElementById("loader-bar");
-            loader.style.display = "block";
-            bar.style.width = "30%";
-
+        async function cargarFiltrosIniciales() {
             try {
-                // CARGA SIMULTÁNEA (Más rápido)
-                const [resDoc, resEst] = await Promise.all([
-                    fetch(URL_DOC + "?v=apiData").then(r => r.json()),
-                    fetch(URL_EST + "?v=apiDataEstudiantes").then(r => r.json())
-                ]);
+                // Cargar Docentes
+                const rDoc = await fetch(`${URL_DOC}?v=getDocentes`);
+                const docentes = await rDoc.json();
+                let sD = document.getElementById("selDocente");
+                sD.innerHTML = '<option value="">-- Seleccione Docente --</option>';
+                docentes.forEach(d => { sD.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`; });
 
-                dbDoc = resDoc;
-                dbEst = resEst;
-                
-                bar.style.width = "100%";
-                setTimeout(() => loader.style.display = "none", 500);
-
-                renderDocentes();
-                renderEstudiantes();
-            } catch(e) { 
-                console.error("Error cargando datos:", e); 
-                alert("Fallo al conectar con los libros SBP. Verifique su conexión.");
-            }
+                // Cargar Grados
+                const rGra = await fetch(`${URL_EST}?v=getGrados`);
+                const grados = await rGra.json();
+                let sG = document.getElementById("selGrado");
+                sG.innerHTML = '<option value="">-- Seleccione Aula --</option>';
+                grados.forEach(g => { sG.innerHTML += `<option value="${g}">${g}</option>`; });
+            } catch(e) { console.error("Error inicial:", e); }
         }
 
-        function renderDocentes() {
-            const mes = document.getElementById("mesDoc").value;
-            const filtroMes = "-"+mes+"-";
-            const tbody = document.getElementById("bodyDoc");
-            tbody.innerHTML = "";
-            let mins = 0, tard = 0;
-
-            dbDoc.asistencias.forEach(r => {
-                if (r[3] === "SALIDA" || !r[0].includes(filtroMes)) return;
-                const conf = dbDoc.config[r[2]];
-                if (!conf) return;
-
-                const [hE, mE] = r[1].split(":").map(Number);
-                const [hC, mC] = conf.entrada.split(":").map(Number);
-                let diff = (hE * 60 + mE) - (hC * 60 + mC);
-                let esTard = diff > 5;
-
-                if (esTard) { tard++; mins += diff; }
-                tbody.innerHTML += `<tr>
-                    <td><strong>${r[2]}</strong></td>
-                    <td>${r[0]}</td>
-                    <td>${r[1]}</td>
-                    <td style="color:${esTard?'red':'green'}; font-weight:bold">${esTard ? diff+' min' : '-'}</td>
-                    <td><span class="badge ${esTard?'bg-warning':'bg-success'}">${esTard?'TARDANZA':'PUNTUAL'}</span></td>
-                </tr>`;
-            });
-            document.getElementById("dMin").textContent = mins;
-            document.getElementById("dTard").textContent = tard;
+        async function cargarAlumnos() {
+            let grado = document.getElementById("selGrado").value;
+            let selA = document.getElementById("selAlumno");
+            if(!grado) return;
+            selA.disabled = true;
+            selA.innerHTML = '<option>Cargando...</option>';
+            const resp = await fetch(`${URL_EST}?v=getAlumnos&grado=${encodeURIComponent(grado)}`);
+            const alumnos = await resp.json();
+            selA.innerHTML = '<option value="">-- Seleccione Alumno --</option>';
+            alumnos.forEach(a => { selA.innerHTML += `<option value="${a.id}">${a.nombre}</option>`; });
+            selA.disabled = false;
         }
 
-        function renderEstudiantes() {
-            const mes = document.getElementById("mesEst").value;
-            const filtroMes = "-"+mes+"-";
-            const tbody = document.getElementById("bodyEst");
-            tbody.innerHTML = "";
-            let total = 0, tard = 0;
-
-            dbEst.forEach(r => {
-                if (!r[0].includes(filtroMes)) return;
-                let esTard = r[5] === "TARDANZA";
-                if (esTard) tard++;
-                total++;
-                tbody.innerHTML += `<tr>
-                    <td><strong>${r[3]}</strong></td>
-                    <td>${r[4]}</td>
-                    <td>${r[0]}</td>
-                    <td>${r[1]}</td>
-                    <td><span class="badge ${esTard?'bg-warning':'bg-success'}">${r[5]}</span></td>
-                </tr>`;
-            });
-            document.getElementById("eTotal").textContent = total;
-            document.getElementById("eTard").textContent = tard;
+        async function consultarEstudiante() {
+            let id = document.getElementById("selAlumno").value;
+            let div = document.getElementById("resEst");
+            if(!id) return;
+            div.innerHTML = "⌛ Consultando...";
+            const resp = await fetch(`${URL_EST}?v=getRecord&id=${id}`);
+            const res = await resp.json();
+            pintarResultado(div, res);
         }
 
-        init();
+        async function consultarDocente() {
+            let id = document.getElementById("selDocente").value;
+            let div = document.getElementById("resDoc");
+            if(!id) return;
+            div.innerHTML = "⌛ Consultando...";
+            const resp = await fetch(`${URL_DOC}?v=getRecord&id=${id}`);
+            const res = await resp.json();
+            pintarResultado(div, res);
+        }
+
+        function pintarResultado(div, res) {
+            let tabla = res.detalle.map(d => `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo || 'ENTRADA'}</td></tr>`).join("");
+            div.innerHTML = `
+                <div class="stats-box">
+                    <div class="stat bg-p"><b>${res.ingresos}</b>Puntuales</div>
+                    <div class="stat bg-t"><b>${res.tardanzas}</b>Tardanzas</div>
+                    <div class="stat bg-f"><b>${res.faltas || 0}</b>Faltas</div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Fecha</th><th>Hora</th><th>Incidencia</th></tr></thead>
+                        <tbody>${tabla || '<tr><td colspan="3">Sin incidencias</td></tr>'}</tbody>
+                    </table>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
