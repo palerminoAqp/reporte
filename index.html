@@ -46,7 +46,7 @@
         .stat b { font-size: 1.6rem; display: block; }
         .bg-p { background: var(--success); } .bg-t { background: var(--warning); } .bg-f { background: var(--danger); }
 
-        .minutos-alerta { background:#fff3cd; color:#856404; padding:10px; border-radius:10px; text-align:center; margin-bottom:10px; font-weight:bold; border:1px solid #ffeeba; font-size: 0.9rem; }
+        .minutos-alerta { background:#fff3cd; color:#856404; padding:12px; border-radius:10px; text-align:center; margin-bottom:12px; font-weight:bold; border:1px solid #ffeeba; font-size: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
@@ -239,7 +239,15 @@
         }
 
         function renderUI(div, p, t, f, data, mins = null) {
-            let infoExtra = (mins !== null) ? `<div class="minutos-alerta">Total Tardanza: ${mins} minutos</div>` : "";
+            let infoExtra = "";
+            if (mins !== null) {
+                // CONVERSIÓN A HORAS Y MINUTOS
+                let horas = Math.floor(mins / 60);
+                let residuoMins = mins % 60;
+                let textoTiempo = (horas > 0) ? `${horas}h ${residuoMins}m` : `${residuoMins} min`;
+                infoExtra = `<div class="minutos-alerta">Total Tardanza: ${textoTiempo} (${mins} min)</div>`;
+            }
+
             let filas = data.map(d => {
                 let clase = d.tipo === "FALTA" ? "row-falta" : "";
                 return `<tr class="${clase}"><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`;
@@ -253,7 +261,7 @@
                 </div>
                 ${infoExtra}
                 <table>
-                    <thead><tr><th>Fecha</th><th>Hora</th><th>Tipo</th></tr></thead>
+                    <thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
                     <tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin datos</td></tr>'}</tbody>
                 </table>`;
         }
