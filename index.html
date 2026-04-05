@@ -8,7 +8,6 @@
         :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
         
-        /* Navbar Superior - Botones Proporcionales en una Fila */
         .navbar { background: var(--primary); color: white; padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: bold; width: 25%; }
         .nav-logo-mini { height: 35px; }
@@ -16,24 +15,19 @@
         .nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 0; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 30%; font-size: 0.8rem; text-align: center; }
         .nav-btn.active { background: var(--gold); color: var(--primary); }
 
-        /* Secciones */
         .section { display: none; padding: 20px; max-width: 900px; margin: auto; animation: fadeIn 0.4s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Pantalla de Inicio - Botones Grandes */
         .home-bg { height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.85), rgba(244,247,246,0.85)), url('insignia.png') no-repeat center; background-size: contain; }
         .home-grid { display: flex; flex-direction: row; gap: 4%; width: 85%; height: 25%; justify-content: center; }
         .btn-home { width: 45%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-home:hover { transform: scale(1.02); border: 2px solid var(--gold); }
-
-        /* Cards y Tablas */
+        
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); margin-bottom: 20px; }
         h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 10px; margin-top: 0; }
         
         .flex-row { display: flex; gap: 10px; align-items: flex-end; }
         .flex-item { flex: 1; }
-
         select, .btn-search { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; box-sizing: border-box; }
         .btn-search { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; }
 
@@ -56,17 +50,17 @@
             <span id="reloj">SBP 2026</span>
         </div>
         <div class="nav-links">
-            <button id="btn-inicio" class="nav-btn active" onclick="ver('inicio', this)">INICIO</button>
-            <button id="btn-docentes" class="nav-btn" onclick="ver('docentes', this)">DOCENTES</button>
-            <button id="btn-estudiantes" class="nav-btn" onclick="ver('estudiantes', this)">ESTUDIANTES</button>
+            <button class="nav-btn active" onclick="ver('inicio', this)">INICIO</button>
+            <button class="nav-btn" onclick="ver('docentes', this)">DOCENTES</button>
+            <button class="nav-btn" onclick="ver('estudiantes', this)">ESTUDIANTES</button>
         </div>
     </nav>
 
     <div id="inicio" class="section active">
         <div class="home-bg">
             <div class="home-grid">
-                <button class="btn-home" onclick="ver('docentes', document.getElementById('btn-docentes'))"><i>👨‍🏫</i>DOCENTES</button>
-                <button class="btn-home" onclick="ver('estudiantes', document.getElementById('btn-estudiantes'))"><i>🎓</i>ESTUDIANTES</button>
+                <button class="btn-home" onclick="ver('docentes')"><i>👨‍🏫</i>DOCENTES</button>
+                <button class="btn-home" onclick="ver('estudiantes')"><i>🎓</i>ESTUDIANTES</button>
             </div>
         </div>
     </div>
@@ -75,18 +69,8 @@
         <div class="card">
             <h2>Récord Docente Mensual</h2>
             <div class="flex-row">
-                <div class="flex-item">
-                    <label>Docente:</label>
-                    <select id="selDoc"><option>Cargando...</option></select>
-                </div>
-                <div class="flex-item">
-                    <label>Mes:</label>
-                    <select id="mesDoc">
-                        <option value="03">Marzo</option>
-                        <option value="04" selected>Abril</option>
-                        <option value="05">Mayo</option>
-                    </select>
-                </div>
+                <div class="flex-item"><label>Docente:</label><select id="selDoc"><option>Cargando...</option></select></div>
+                <div class="flex-item"><label>Mes:</label><select id="mesDoc"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
             </div>
             <button class="btn-search" onclick="getRecordDoc()">CONSULTAR PERIODO</button>
             <div id="resDoc"></div>
@@ -97,21 +81,10 @@
         <div class="card">
             <h2>Récord Estudiantil Mensual</h2>
             <div class="flex-row">
-                <div class="flex-item">
-                    <label>Aula:</label>
-                    <select id="selGra" onchange="getAlu()"><option>Cargando...</option></select>
-                </div>
-                <div class="flex-item">
-                    <label>Mes:</label>
-                    <select id="mesEst">
-                        <option value="03">Marzo</option>
-                        <option value="04" selected>Abril</option>
-                        <option value="05">Mayo</option>
-                    </select>
-                </div>
+                <div class="flex-item"><label>Aula:</label><select id="selGra" onchange="getAlu()"><option>Cargando...</option></select></div>
+                <div class="flex-item"><label>Mes:</label><select id="mesEst"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
             </div>
-            <label>Estudiante:</label>
-            <select id="selAlu" disabled><option>Seleccione aula</option></select>
+            <label>Estudiante:</label><select id="selAlu" disabled><option>Seleccione aula</option></select>
             <button class="btn-search" onclick="getRecordEst()">CONSULTAR PERIODO</button>
             <div id="resEst"></div>
         </div>
@@ -121,7 +94,8 @@
         const API_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
         const API_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
 
-        let configDocentes = {};
+        let dbConfigDoc = {};
+        const DIAS_TEXTO = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
         function ver(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -132,14 +106,12 @@
 
         window.onload = async () => {
             setInterval(() => { document.getElementById("reloj").textContent = new Date().toLocaleTimeString(); }, 1000);
-            
             fetch(API_DOC + "?v=apiData").then(r => r.json()).then(data => {
-                configDocentes = data.config;
+                dbConfigDoc = data.config;
                 let s = document.getElementById("selDoc");
                 s.innerHTML = '<option value="">-- Seleccione --</option>';
                 Object.keys(data.config).sort().forEach(n => s.innerHTML += `<option value="${n}">${n}</option>`);
             });
-
             fetch(API_EST + "?v=getGrados").then(r => r.json()).then(data => {
                 let s = document.getElementById("selGra");
                 s.innerHTML = '<option value="">-- Seleccione --</option>';
@@ -162,30 +134,26 @@
             let mes = document.getElementById("mesDoc").value;
             let div = document.getElementById("resDoc");
             if(!nombre) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Calculando reporte...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Analizando asistencia...</p>";
             
             const res = await fetch(`${API_DOC}?v=getRecord&id=${encodeURIComponent(nombre)}`).then(r => r.json());
-            const conf = configDocentes[nombre];
+            const conf = dbConfigDoc[nombre];
             
-            let puntuales = 0, tardanzas = 0;
-            let diasAsistidos = new Set();
-
+            let p = 0, t = 0;
+            let asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+mes+"-")).map(d => {
                 if(d.tipo === "SALIDA") return "";
-                diasAsistidos.add(d.fecha);
-
+                asistidos.add(d.fecha);
                 const [hM, mM] = d.hora.split(":").map(Number);
                 const [hO, mO] = conf.entrada.split(":").map(Number);
                 let diff = (hM * 60 + mM) - (hO * 60 + mO);
                 let esTard = diff > 5;
-                if(esTard) tardanzas++; else puntuales++;
-
+                if(esTard) t++; else p++;
                 return `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${esTard ? 'TARDANZA ('+diff+'m)' : 'PUNTUAL'}</td></tr>`;
             }).join("");
 
-            // Docentes inician 10 de Marzo
-            let faltas = calcularFaltasMes(diasAsistidos, mes, 10);
-            renderUI(div, puntuales, tardanzas, faltas, filas);
+            let f = calcularFaltasInteligente(asistidos, mes, conf.dia, 10, "docente");
+            renderUI(div, p, t, f, filas);
         }
 
         async function getRecordEst() {
@@ -194,61 +162,43 @@
             let div = document.getElementById("resEst");
             if(!id) return;
             div.innerHTML = "<p style='text-align:center'>⌛ Consultando...</p>";
-            
             const res = await fetch(`${API_EST}?v=getRecord&id=${encodeURIComponent(id)}`).then(r => r.json());
-            let puntuales = 0, tardanzas = 0;
-            let diasA = new Set();
-            
+            let p = 0, t = 0, asistidos = new Set();
             let filas = res.detalle.filter(d => d.fecha.includes("-"+mes+"-")).map(d => {
-                diasA.add(d.fecha);
-                if(d.tipo === "TARDANZA") tardanzas++; else puntuales++;
+                asistidos.add(d.fecha);
+                if(d.tipo === "TARDANZA") t++; else p++;
                 return `<tr><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`;
             }).join("");
-
-            // Estudiantes inician 06 de Abril
-            let f = calcularFaltasMes(diasA, mes, 6, "estudiante");
-            renderUI(div, puntuales, tardanzas, f, filas);
+            let f = calcularFaltasInteligente(asistidos, mes, "todos", 6, "estudiante");
+            renderUI(div, p, t, f, filas);
         }
 
-        function calcularFaltasMes(diasAsistidos, mes, diaInicioControl, tipo = "docente") {
-            let hoy = new Date();
-            let año = 2026;
-            let mesInt = parseInt(mes) - 1;
-            let totalFaltas = 0;
-            
-            // Si el mes consultado es anterior al mes de inicio, no hay faltas (ej: Estudiantes en marzo)
+        function calcularFaltasInteligente(asistidos, mes, diaConfig, diaInicio, tipo) {
+            let hoy = new Date(), año = 2026, mesIdx = parseInt(mes) - 1, faltas = 0;
             if (tipo === "estudiante" && mes === "03") return 0;
-
-            let diaInicio = (mesInt === (tipo === "estudiante" ? 3 : 2)) ? diaInicioControl : 1;
-            let temp = new Date(año, mesInt, diaInicio);
-            let finMes = new Date(año, mesInt + 1, 0);
+            
+            let inicio = (mesIdx === (tipo === "estudiante" ? 3 : 2)) ? diaInicio : 1;
+            let temp = new Date(año, mesIdx, inicio);
+            let finMes = new Date(año, mesIdx + 1, 0);
             let limite = (hoy < finMes) ? hoy : finMes;
 
-            // Si la fecha de inicio es mayor al límite actual (hoy), no hay faltas todavía
-            if (temp > limite) return 0;
-
             while(temp <= limite) {
-                let diaSemana = temp.getDay();
-                if(diaSemana !== 0 && diaSemana !== 6) { 
-                    let fechaStr = temp.toISOString().split('T')[0];
-                    if(!diasAsistidos.has(fechaStr)) totalFaltas++;
+                let diaSem = temp.getDay();
+                if(diaSem !== 0 && diaSem !== 6) {
+                    let diaNombre = DIAS_TEXTO[diaSem];
+                    // Si el docente va "todos" los días o el nombre del día coincide con su configuración
+                    if(diaConfig === "todos" || diaNombre === diaConfig.toLowerCase()) {
+                        let fStr = temp.toISOString().split('T')[0];
+                        if(!asistidos.has(fStr)) faltas++;
+                    }
                 }
                 temp.setDate(temp.getDate() + 1);
             }
-            return totalFaltas;
+            return faltas;
         }
 
         function renderUI(div, p, t, f, filas) {
-            div.innerHTML = `
-                <div class="stats-box">
-                    <div class="stat bg-p"><b>${p}</b>PUNTUALES</div>
-                    <div class="stat bg-t"><b>${t}</b>TARDANZAS</div>
-                    <div class="stat bg-f"><b>${f}</b>FALTAS</div>
-                </div>
-                <div class="table-wrapper">
-                    <table><thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
-                    <tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin registros</td></tr>'}</tbody></table>
-                </div>`;
+            div.innerHTML = `<div class="stats-box"><div class="stat bg-p"><b>${p}</b>PUNTUALES</div><div class="stat bg-t"><b>${t}</b>TARDANZAS</div><div class="stat bg-f"><b>${f}</b>FALTAS</div></div><div class="table-wrapper"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead><tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin registros</td></tr>'}</tbody></table></div>`;
         }
     </script>
 </body>
