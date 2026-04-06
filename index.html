@@ -7,47 +7,32 @@
     <style>
         :root { --primary: #1a237e; --gold: #d4af37; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
-        
-        /* NAVBAR ESTRUCTURA */
         .navbar { background: var(--primary); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .nav-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .nav-brand { display: flex; align-items: center; gap: 10px; }
         .nav-logo-mini { height: 32px; width: auto; }
         .nav-title { font-weight: bold; font-size: 1rem; letter-spacing: 1px; }
         #reloj { font-family: 'Courier New', monospace; color: var(--gold); font-weight: bold; font-size: 0.9rem; }
-
         .nav-links { display: flex; width: 100%; background: rgba(0,0,0,0.2); }
-        .nav-btn { background: none; border: none; color: white; padding: 10px 0; cursor: pointer; font-weight: bold; width: 33.33%; font-size: 0.75rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: 0.3s; }
-        .nav-btn i { font-size: 1.2rem; font-style: normal; }
+        .nav-btn { background: none; border: none; color: white; padding: 10px 0; cursor: pointer; font-weight: bold; width: 33.33%; font-size: 0.75rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .nav-btn.active { color: var(--gold); background: rgba(255,255,255,0.05); box-shadow: inset 0 -3px 0 var(--gold); }
-
-        /* INICIO */
         .home-bg { height: 80vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(244,247,246,0.8), rgba(244,247,246,0.8)), url('insignia.png') no-repeat center; background-size: contain; }
         .home-grid { display: flex; width: 92%; height: 28%; gap: 4%; justify-content: center; }
         .btn-home { width: 46%; height: 100%; background: var(--primary); color: var(--gold); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 1.4rem; box-shadow: 0 8px 20px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-home i { font-size: 3.5rem; font-style: normal; }
-
-        /* SECCIONES */
         .section { display: none; padding: 15px; max-width: 800px; margin: auto; animation: fadeIn 0.3s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 6px solid var(--primary); }
-        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-top: 0; font-size: 1.2rem; }
-        
+        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin: 0 0 10px 0; font-size: 1.2rem; }
         .flex-row { display: flex; gap: 10px; margin-bottom: 10px; }
         .flex-item { flex: 1; }
-        select, .btn-search { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; box-sizing: border-box; }
+        select, .btn-search { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; }
         .btn-search { background: var(--primary); color: var(--gold); border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
-
-        /* STATS Y TABLAS */
         .stats-box { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
         .stat { padding: 12px 5px; border-radius: 10px; color: white; text-align: center; font-weight: bold; font-size: 0.7rem; }
         .stat b { font-size: 1.6rem; display: block; }
         .bg-p { background: var(--success); } .bg-t { background: var(--warning); } .bg-f { background: var(--danger); }
-
-        .minutos-alerta { background:#fff3cd; color:#856404; padding:12px; border-radius:10px; text-align:center; margin-bottom:12px; font-weight:bold; border:1px solid #ffeeba; font-size: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-
+        .minutos-alerta { background:#fff3cd; color:#856404; padding:12px; border-radius:10px; text-align:center; margin-bottom:12px; font-weight:bold; border:1px solid #ffeeba; font-size: 1rem; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
         th { background: #f8f9fa; color: var(--primary); }
@@ -55,13 +40,9 @@
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="nav-top">
-            <div class="nav-brand">
-                <img src="insignia.png" class="nav-logo-mini" alt="Logo">
-                <span class="nav-title">SBP 2026</span>
-            </div>
+            <div class="nav-brand"><img src="insignia.png" class="nav-logo-mini"> <span class="nav-title">SBP 2026</span></div>
             <div id="reloj">00:00:00</div>
         </div>
         <div class="nav-links">
@@ -70,68 +51,50 @@
             <button id="nav-estudiantes" class="nav-btn" onclick="ver('estudiantes', this)"><i>🎓</i>ALUMNOS</button>
         </div>
     </nav>
-
     <div id="inicio" class="section active">
-        <div class="home-bg">
-            <div class="home-grid">
-                <button class="btn-home" onclick="ver('docentes', document.getElementById('nav-docentes'))"><i>👨‍🏫</i><span>DOCENTES</span></button>
-                <button class="btn-home" onclick="ver('estudiantes', document.getElementById('nav-estudiantes'))"><i>🎓</i><span>ALUMNOS</span></button>
-            </div>
-        </div>
+        <div class="home-bg"><div class="home-grid">
+            <button class="btn-home" onclick="ver('docentes', document.getElementById('nav-docentes'))"><i>👨‍🏫</i><span>DOCENTES</span></button>
+            <button class="btn-home" onclick="ver('estudiantes', document.getElementById('nav-estudiantes'))"><i>🎓</i><span>ALUMNOS</span></button>
+        </div></div>
     </div>
-
     <div id="docentes" class="section">
         <div class="card">
-            <h2>Récord Docente Mensual</h2>
+            <h2>Récord Docente</h2>
             <div class="flex-row">
-                <div class="flex-item"><label>Docente:</label><select id="selDoc"><option>Cargando...</option></select></div>
-                <div class="flex-item"><label>Mes:</label><select id="mesDoc">
-                    <option value="03">Marzo</option>
-                    <option value="04" selected>Abril</option>
-                    <option value="05">Mayo</option>
-                </select></div>
+                <div class="flex-item"><label>Docente:</label><select id="selDoc"></select></div>
+                <div class="flex-item"><label>Mes:</label><select id="mesDoc"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
             </div>
-            <button class="btn-search" onclick="getRecordDoc()">CONSULTAR PERIODO</button>
+            <button class="btn-search" onclick="getRecordDoc()">CONSULTAR</button>
             <div id="resDoc"></div>
         </div>
     </div>
-
     <div id="estudiantes" class="section">
         <div class="card">
-            <h2>Récord Estudiantil Mensual</h2>
+            <h2>Récord Alumno</h2>
             <div class="flex-row">
-                <div class="flex-item"><label>Aula:</label><select id="selGra" onchange="getAlu()"><option>Cargando...</option></select></div>
-                <div class="flex-item"><label>Mes:</label><select id="mesEst">
-                    <option value="03">Marzo</option>
-                    <option value="04" selected>Abril</option>
-                    <option value="05">Mayo</option>
-                </select></div>
+                <div class="flex-item"><label>Aula:</label><select id="selGra" onchange="getAlu()"></select></div>
+                <div class="flex-item"><label>Mes:</label><select id="mesEst"><option value="03">Marzo</option><option value="04" selected>Abril</option><option value="05">Mayo</option></select></div>
             </div>
             <label>Estudiante:</label><select id="selAlu" disabled><option>Seleccione aula</option></select>
-            <button class="btn-search" onclick="getRecordEst()">CONSULTAR PERIODO</button>
+            <button class="btn-search" onclick="getRecordEst()">CONSULTAR</button>
             <div id="resEst"></div>
         </div>
     </div>
-
     <script>
         const API_DOC = "https://script.google.com/macros/s/AKfycbyvC4vzlJeYLvQiMcOYFR3b3RraWSRGlKIoQfRIjsSUBG32kigA8c7ENBLwUCDyFtQPKA/exec";
         const API_EST = "https://script.google.com/macros/s/AKfycbzkDuskL8PVOxnWQwC6UlhtGQoblCkcCuwRtkDuFhvtSqSiyRxCzRChOrJw2UySQ2tACg/exec";
-
         let feriados = [];
-
         function ver(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
         }
-
         window.onload = () => {
             setInterval(() => { 
                 const now = new Date();
-                document.getElementById("reloj").textContent = now.toLocaleTimeString('es-PE', { hour12: false }); 
+                document.getElementById("reloj").textContent = now.toLocaleTimeString('es-PE', { timeZone: 'America/Lima', hour12: false }); 
             }, 1000);
-            
             fetch(API_DOC + "?v=apiData").then(r => r.json()).then(data => {
                 feriados = data.feriados || [];
                 fetch(API_DOC + "?v=getDocentes").then(r => r.json()).then(doc => {
@@ -140,14 +103,12 @@
                     doc.forEach(d => s.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`);
                 });
             });
-
             fetch(API_EST + "?v=getGrados").then(r => r.json()).then(data => {
                 let s = document.getElementById("selGra");
                 s.innerHTML = '<option value="">-- Seleccione --</option>';
                 data.forEach(g => s.innerHTML += `<option value="${g}">${g}</option>`);
             });
         };
-
         async function getAlu() {
             let g = document.getElementById("selGra").value;
             let s = document.getElementById("selAlu");
@@ -157,113 +118,58 @@
             data.forEach(a => s.innerHTML += `<option value="${a.id}">${a.nombre}</option>`);
             s.disabled = false;
         }
-
         async function getRecordDoc() {
             let n = document.getElementById("selDoc").value;
             let m = document.getElementById("mesDoc").value;
             let div = document.getElementById("resDoc");
             if(!n) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Cargando...</p>";
             const res = await fetch(`${API_DOC}?v=getRecord&id=${encodeURIComponent(n)}`).then(r => r.json());
-            
             let asistidos = new Set();
-            let registrosFinales = res.detalle.filter(d => d.fecha.includes("-"+m+"-"));
-            registrosFinales.forEach(r => asistidos.add(r.fecha));
-
-            let p = registrosFinales.filter(r => r.tipo.includes("PUNTUAL")).length;
-            let t = registrosFinales.filter(r => r.tipo.includes("TARDANZA")).length;
-
-            let minsTotal = 0;
-            registrosFinales.forEach(r => {
-                if(r.tipo.includes("TARDANZA")){
-                    let match = r.tipo.match(/\((\d+)\smin\)/);
-                    if(match) minsTotal += parseInt(match[1]);
-                }
-            });
-
-            let listaFaltas = obtenerListaFaltas(asistidos, m, res.diaConfig, 10, "docente");
-            let f = listaFaltas.length;
-            listaFaltas.forEach(fechaF => {
-                registrosFinales.push({ fecha: fechaF, hora: "--:--", tipo: "FALTA" });
-            });
-
-            registrosFinales.sort((a, b) => b.fecha.localeCompare(a.fecha));
-            renderUI(div, p, t, f, registrosFinales, minsTotal);
+            let reg = res.detalle.filter(d => d.fecha.includes("-"+m+"-"));
+            reg.forEach(r => asistidos.add(r.fecha));
+            let p = reg.filter(r => r.tipo.includes("PUNTUAL")).length;
+            let t = reg.filter(r => r.tipo.includes("TARDANZA")).length;
+            let mins = 0; reg.forEach(r => { if(r.tipo.includes("TARDANZA")){ let match = r.tipo.match(/\((\d+)\smin\)/); if(match) mins += parseInt(match[1]); } });
+            let fList = obtenerFaltas(asistidos, m, res.diaConfig, 10, "docente");
+            fList.forEach(fecha => reg.push({ fecha: fecha, hora: "--:--", tipo: "FALTA" }));
+            reg.sort((a, b) => b.fecha.localeCompare(a.fecha));
+            renderUI(div, p, t, fList.length, reg, mins);
         }
-
         async function getRecordEst() {
             let id = document.getElementById("selAlu").value;
             let m = document.getElementById("mesEst").value;
             let div = document.getElementById("resEst");
             if(!id) return;
-            div.innerHTML = "<p style='text-align:center'>⌛ Obteniendo récord...</p>";
+            div.innerHTML = "<p style='text-align:center'>⌛ Cargando...</p>";
             const res = await fetch(`${API_EST}?v=getRecord&id=${encodeURIComponent(id)}`).then(r => r.json());
-            
             let asistidos = new Set();
-            let registrosFinales = res.detalle.filter(d => d.fecha.includes("-"+m+"-"));
-            registrosFinales.forEach(r => asistidos.add(r.fecha));
-
-            let p = registrosFinales.filter(r => r.tipo === "INGRESO").length;
-            let t = registrosFinales.filter(r => r.tipo === "TARDANZA").length;
-
-            let listaFaltas = (m === "03") ? [] : obtenerListaFaltas(asistidos, m, "todos", 6, "estudiante");
-            let f = listaFaltas.length;
-            listaFaltas.forEach(fechaF => {
-                registrosFinales.push({ fecha: fechaF, hora: "--:--", tipo: "FALTA" });
-            });
-
-            registrosFinales.sort((a, b) => b.fecha.localeCompare(a.fecha));
-            renderUI(div, p, t, f, registrosFinales);
+            let reg = res.detalle.filter(d => d.fecha.includes("-"+m+"-"));
+            reg.forEach(r => asistidos.add(r.fecha));
+            let fList = (m === "03") ? [] : obtenerFaltas(asistidos, m, "todos", 6, "estudiante");
+            fList.forEach(fecha => reg.push({ fecha: fecha, hora: "--:--", tipo: "FALTA" }));
+            reg.sort((a, b) => b.fecha.localeCompare(a.fecha));
+            renderUI(div, reg.filter(r => r.tipo === "INGRESO").length, reg.filter(r => r.tipo === "TARDANZA").length, fList.length, reg);
         }
-
-        function obtenerListaFaltas(asistidos, mes, diaConfig, diaIni, tipo) {
-            let hoy = new Date(), año = 2026, mesIdx = parseInt(mes)-1;
+        function obtenerFaltas(asistidos, mes, diaConfig, diaIni, tipo) {
+            let hoy = new Date(), año = 2026, mesIdx = parseInt(mes)-1, faltas = [];
             let inicio = (mesIdx === (tipo === "estudiante" ? 3 : 2)) ? diaIni : 1;
             let temp = new Date(año, mesIdx, inicio);
             let limite = (hoy < new Date(año, mesIdx + 1, 0)) ? hoy : new Date(año, mesIdx + 1, 0);
             const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
-            let faltas = [];
-
             while(temp <= limite) {
                 let dSem = temp.getDay();
                 let fStr = temp.toISOString().split('T')[0];
                 if(dSem !== 0 && dSem !== 6 && !feriados.includes(fStr)) {
-                    let dNom = DIAS[dSem];
-                    if(diaConfig === "todos" || diaConfig === dNom) {
-                        if(!asistidos.has(fStr)) faltas.push(fStr);
-                    }
+                    if(diaConfig === "todos" || diaConfig === DIAS[dSem]) { if(!asistidos.has(fStr)) faltas.push(fStr); }
                 }
                 temp.setDate(temp.getDate() + 1);
             }
             return faltas;
         }
-
         function renderUI(div, p, t, f, data, mins = null) {
-            let infoExtra = "";
-            if (mins !== null) {
-                // CONVERSIÓN A HORAS Y MINUTOS
-                let horas = Math.floor(mins / 60);
-                let residuoMins = mins % 60;
-                let textoTiempo = (horas > 0) ? `${horas}h ${residuoMins}m` : `${residuoMins} min`;
-                infoExtra = `<div class="minutos-alerta">Total Tardanza: ${textoTiempo} (${mins} min)</div>`;
-            }
-
-            let filas = data.map(d => {
-                let clase = d.tipo === "FALTA" ? "row-falta" : "";
-                return `<tr class="${clase}"><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`;
-            }).join("");
-
-            div.innerHTML = `
-                <div class="stats-box">
-                    <div class="stat bg-p"><b>${p}</b>PUNTUALES</div>
-                    <div class="stat bg-t"><b>${t}</b>TARDANZAS</div>
-                    <div class="stat bg-f"><b>${f}</b>FALTAS</div>
-                </div>
-                ${infoExtra}
-                <table>
-                    <thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
-                    <tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin datos</td></tr>'}</tbody>
-                </table>`;
+            let info = (mins !== null) ? `<div class="minutos-alerta">Total Tardanza: ${Math.floor(mins/60)}h ${mins%60}m (${mins} min)</div>` : "";
+            div.innerHTML = `<div class="stats-box"><div class="stat bg-p"><b>${p}</b>PUNTUALES</div><div class="stat bg-t"><b>${t}</b>TARDANZAS</div><div class="stat bg-f"><b>${f}</b>FALTAS</div></div>${info}<table><thead><tr><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead><tbody>${data.map(d => `<tr class="${d.tipo === 'FALTA' ? 'row-falta' : ''}"><td>${d.fecha}</td><td>${d.hora}</td><td>${d.tipo}</td></tr>`).join("")}</tbody></table>`;
         }
     </script>
 </body>
